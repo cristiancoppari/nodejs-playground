@@ -9,7 +9,7 @@ export const argv = yargs(hideBin(process.argv))
     describe: "Multiplication table base",
   })
   .option("l", {
-    alias: "list",
+    alias: "limit",
     type: "number",
     default: 10,
     describe: "List the multiplication table",
@@ -19,6 +19,18 @@ export const argv = yargs(hideBin(process.argv))
     type: "boolean",
     default: false,
     describe: "Show the multiplication table",
+  })
+  .option("d", {
+    alias: "destination",
+    type: "string",
+    default: "outputs/",
+    describe: "Destination of the file",
+  })
+  .option("n", {
+    alias: "name",
+    type: "string",
+    default: "multiplication-table",
+    describe: "Name of the file",
   })
   .check((argv) => {
     if (argv.b < 0) {

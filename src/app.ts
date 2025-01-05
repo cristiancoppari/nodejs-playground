@@ -1,23 +1,18 @@
-import fs from "fs";
 import { argv } from "./plugins/args.plugins";
+import { ServerApp } from "./presentation/server-app";
 
-let outputMessage = "";
-const base = argv.b;
-const outputPath = "outputs/";
+(async () => {
+  await main();
+})();
 
-const headerMessage = `======================\n Tabla del ${base}\n======================\n`;
+async function main() {
+  const { b: base, l: limit, s: show, d: destination, n: name } = argv;
 
-for (let i = 1; i <= argv.l; i++) {
-  outputMessage += `${base} x ${i} = ${Number(base) * i}\n`;
+  ServerApp.run({
+    base,
+    limit,
+    show,
+    destination,
+    name,
+  });
 }
-
-outputMessage = headerMessage + outputMessage;
-
-fs.mkdirSync(outputPath, { recursive: true });
-fs.writeFileSync(`${outputPath}tabla-${base}.txt`, outputMessage);
-
-if (argv.s) {
-  console.log(outputMessage);
-}
-
-console.log("File created");
