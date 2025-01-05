@@ -6,10 +6,11 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:watchAll": "jest --watchAll",
     "test:coverage": "jest --coverage",
     "dev": "nodemon",
-    "build": "rimraf ./dist && tsc",
-    "start": "pnpm run build && node dist/app.js"
+    "build": "pnpm run test && rimraf ./dist && tsc",
+    "start": "node dist/app.js"
   },
   "keywords": [],
   "author": "",
