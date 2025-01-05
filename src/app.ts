@@ -1,33 +1,23 @@
-import { getPokemonById } from "./js-foundation/06-promises";
-import { buildLogger } from "./plugins/logger.plugin";
-// const { getAge, getUUID } = require('./plugins');
+import fs from "fs";
+import { argv } from "./plugins/args.plugins";
 
-// const { emailTemplate } = require('./js-foundation/01-template');
-// require('./js-foundation/02-destructuring');
-// const { getUserById } = require('./js-foundation/03-callbacks');
-// const { getUserById } = require('./js-foundation/04-arrow');
-// const { buildMakePerson } = require('./js-foundation/05-factory')
+let outputMessage = "";
+const base = argv.b;
+const outputPath = "outputs/";
 
-// const getPokemonById = require('./js-foundation/06-promises');
+const headerMessage = `======================\n Tabla del ${base}\n======================\n`;
 
-// const logger = buildLogger("app.js");
+for (let i = 1; i <= argv.l; i++) {
+  outputMessage += `${base} x ${i} = ${Number(base) * i}\n`;
+}
 
-// logger.log("Hola mundo");
-// logger.error("Esto es algo malo");
+outputMessage = headerMessage + outputMessage;
 
-// getPokemonById(4)
-//   .then( ( pokemon ) => console.log({ pokemon }) )
-//   .catch( ( err ) => console.error( err ) )
-//   .finally( () => console.log('Finalmente') );
+fs.mkdirSync(outputPath, { recursive: true });
+fs.writeFileSync(`${outputPath}tabla-${base}.txt`, outputMessage);
 
-// token de acceso
-// Publicas
+if (argv.s) {
+  console.log(outputMessage);
+}
 
-// ! Referencia a la función factory y uso
-// const makePerson = buildMakePerson({ getUUID, getAge });
-
-// const obj = { name: 'John', birthdate: '1985-10-21' };
-
-// const john = makePerson( obj );
-
-// console.log({ john });
+console.log("File created");
