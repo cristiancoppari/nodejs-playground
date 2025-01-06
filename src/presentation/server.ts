@@ -1,5 +1,11 @@
 import { CheckService } from "../domain/use-cases/checks/check-service";
+import { LogRepositoryImplementation } from "../infraestructure/repositories/log.repository.implementation";
 import { CronService } from "./cron-service";
+import { FileSystemDatasource } from "../infraestructure/datasources/file-system.datasource";
+
+const fileSystemaLogRepository = new LogRepositoryImplementation(
+  new FileSystemDatasource()
+);
 
 const logHeader = () => {
   console.log("");
@@ -17,7 +23,8 @@ export class Server {
       const url = "http://localhost:3001";
 
       new CheckService(
-        () => console.log("Success"),
+        fileSystemaLogRepository,
+        () => console.log(`${url} is ok`),
         (error) => console.error(error)
       ).execute(url);
     });
