@@ -1,18 +1,9 @@
-import { argv } from "./plugins/args.plugins";
-import { ServerApp } from "./presentation/server-app";
+import Server from "./presentation/server";
 
-(async () => {
-  await main();
+(() => {
+  main();
 })();
 
-async function main() {
-  const { b: base, l: limit, s: show, d: destination, n: name } = argv;
-
-  ServerApp.run({
-    base,
-    limit,
-    show,
-    destination,
-    name,
-  });
+function main() {
+  Server.start();
 }
