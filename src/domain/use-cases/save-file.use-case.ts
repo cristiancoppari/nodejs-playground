@@ -2,8 +2,8 @@ import fs from "fs";
 
 interface SaveFileOptions {
   fileContent: string;
-  fileDestination: string;
-  fileName: string;
+  fileDestination?: string;
+  fileName?: string;
 }
 
 export interface ISaveFileUseCase {
@@ -24,6 +24,7 @@ export class SaveFileUseCase implements ISaveFileUseCase {
       fs.writeFileSync(`${outputPath}${fileName}.txt`, fileContent);
       return true;
     } catch (error) {
+      // console.log(error);
       return false;
     }
   }
