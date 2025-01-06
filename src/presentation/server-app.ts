@@ -10,8 +10,8 @@ interface RunOptions {
 }
 
 export class ServerApp {
-  static async run({ base, limit, show, destination, name }: RunOptions) {
-    console.log("Server running");
+  static run({ base, limit, show, destination, name }: RunOptions) {
+    console.log("Server running...");
 
     const table = new CreateTable().execute({ base, limit });
     const wasCreated = new SaveFileUseCase().execute({
@@ -23,7 +23,7 @@ export class ServerApp {
     if (wasCreated) {
       console.log("File created");
     } else {
-      console.log("File not created");
+      console.error("File not created");
     }
 
     if (show) {
