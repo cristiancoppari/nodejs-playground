@@ -18,11 +18,7 @@ interface EmailAttachment {
 }
 
 export class EmailService {
-  private readonly logRepository: LogRepository;
-
-  constructor(logRepository: LogRepository) {
-    this.logRepository = logRepository;
-  }
+  constructor() {}
 
   private transporter = nodemailer.createTransport({
     service: envs.MAILER_SERVICE,
@@ -50,8 +46,6 @@ export class EmailService {
           message: "Email sent successfully",
         });
 
-        this.logRepository.saveLog(log);
-
         return true;
       }
 
@@ -62,7 +56,7 @@ export class EmailService {
     }
   }
 
-  sendEmailWithFileSystemLogs(to: string) {
+  async sendEmailWithFileSystemLogs(to: string | string[]) {
     const subject = "Server logs";
 
     const body = `
@@ -85,6 +79,8 @@ export class EmailService {
       },
     ];
 
-    this.sendEmail({ to, subject, body, attachments });
+    const sent = await this.sendEmail({ to, subject, body, attachments });
+
+    return sent;
   }
 }
