@@ -44,8 +44,6 @@ export class FileSystemDatasource implements LogDatasource {
     if (newLog.level === LogSeverityLevel.high) {
       fs.appendFileSync(this.highLogsPath, logAsJson);
     }
-
-    throw new Error("Method not implemented.");
   }
 
   private getLogsFromFile(path: string): LogEntity[] {
