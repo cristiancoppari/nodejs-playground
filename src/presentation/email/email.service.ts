@@ -1,18 +1,16 @@
 import nodemailer from "nodemailer";
 import { envs } from "../../config/plugins/env.plugin";
 import path from "path";
-import { Logger } from "winston";
-import { LogRepository } from "../../domain/repository/log.repository";
 import { LogEntity, LogSeverityLevel } from "../../domain/entities/log.entity";
 
-interface EmailServiceOptions {
+export interface EmailServiceOptions {
   to: string | string[];
   subject: string;
   body: string;
   attachments?: EmailAttachment[];
 }
 
-interface EmailAttachment {
+export interface EmailAttachment {
   filename: string;
   path: string;
 }
