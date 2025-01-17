@@ -6,10 +6,6 @@ The objective of this project is to create a service that checks if a service is
 
 1. Install dependencies
 2. Configure the .env file
-
-```env
-PORT=3000
-MAILER_EMAIL=
-MAILER_SECRET_KEY=
-PROD=
-```
+3. Ejecutar comando `npm install`
+4. Levantar las bases de datos con `docker compose up -d`
+5. Ejecutar comando `npm run dev`
