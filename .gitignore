@@ -6,3 +6,6 @@ coverage/
 .env
 mongo-db/
 postgres-db/
+mongo-db-test/
+postgres-db-test/
+json-server/
