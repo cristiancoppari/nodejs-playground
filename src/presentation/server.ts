@@ -1,4 +1,3 @@
-import { CheckService } from "../domain/use-cases/checks/check-service";
 import { LogRepositoryImplementation } from "../infraestructure/repositories/log.repository.implementation";
 import { CronService } from "./cron/cron-service";
 import { FileSystemDatasource } from "../infraestructure/datasources/file-system.datasource";
@@ -6,10 +5,17 @@ import { MongoLogDatasource } from "../infraestructure/datasources/mongo-log.dat
 import { PostgresLogDatasource } from "../infraestructure/datasources/postgres-log.datasource";
 import { EmailService } from "./email/email.service";
 import { SendEmailLogs } from "../domain/use-cases/email/send-email-logs";
+import { CheckServiceMultiple } from "../domain/use-cases/checks/check-service-multiple";
 
-const logRepository = new LogRepositoryImplementation(
-  // new FileSystemDatasource()
-  // new MongoLogDatasource()
+const fsLogRepository = new LogRepositoryImplementation(
+  new FileSystemDatasource()
+);
+
+const mongoLogRepository = new LogRepositoryImplementation(
+  new MongoLogDatasource()
+);
+
+const postgresLogRepository = new LogRepositoryImplementation(
   new PostgresLogDatasource()
 );
 
@@ -36,8 +42,8 @@ export class Server {
     CronService.createJob(`*/5 * * * * *`, () => {
       const url = "http://localhost:3001";
 
-      new CheckService(
-        logRepository,
+      new CheckServiceMultiple(
+        [fsLogRepository, mongoLogRepository, postgresLogRepository],
         () => console.log(`${url} is ok`),
         (error) => console.error(error)
       ).execute(url);
