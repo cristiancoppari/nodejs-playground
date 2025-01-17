@@ -4,15 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsnd --respawn src/app.ts",
+    "dev": "tsnd --respawn --clear src/app.ts",
     "build": "rimraf ./dist && tsc",
-    "start": "node dist/app.js",
-    "docker:test": "docker compose -f docker-compose.test.yaml --env-file .env.test up -d",
-    "test": "pnpm run docker:test && jest",
-    "test:watch": "pnpm run docker:test && jest --watch",
-    "test:watchAll": "pnpm run docker:test && jest --watchAll",
-    "test:coverage": "pnpm run docker:test && jest --coverage",
-    "db:start": "npx json-server --watch json-server/db.json --port 3001"
+    "start": "node dist/app.js"
   },
   "keywords": [],
   "author": "",
