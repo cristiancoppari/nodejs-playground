@@ -4,7 +4,6 @@ import { FileSystemDatasource } from "../infraestructure/datasources/file-system
 import { MongoLogDatasource } from "../infraestructure/datasources/mongo-log.datasource";
 import { PostgresLogDatasource } from "../infraestructure/datasources/postgres-log.datasource";
 import { EmailService } from "./email/email.service";
-import { SendEmailLogs } from "../domain/use-cases/email/send-email-logs";
 import { CheckServiceMultiple } from "../domain/use-cases/checks/check-service-multiple";
 
 const fsLogRepository = new LogRepositoryImplementation(

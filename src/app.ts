@@ -1,7 +1,6 @@
 import Server from "./presentation/server";
 import { envs } from "./config/plugins/env.plugin";
-import { MongoDatabase, LogModel } from "./data/mongo";
-import { PrismaClient, SeverityLevel } from "@prisma/client";
+import { MongoDatabase } from "./data/mongo";
 
 (async () => {
   initMongo();
