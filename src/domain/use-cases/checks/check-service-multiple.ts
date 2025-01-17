@@ -24,6 +24,8 @@ export class CheckServiceMultiple implements CheckServiceMultipleUseCase {
         throw new Error(`Error on check service: ${url}`);
       }
 
+      this.successCallback?.();
+
       this.callLogs(
         new LogEntity({
           level: LogSeverityLevel.low,
@@ -31,8 +33,6 @@ export class CheckServiceMultiple implements CheckServiceMultipleUseCase {
           origin: "check-service.ts",
         })
       );
-
-      this.successCallback?.();
 
       return true;
     } catch (error) {

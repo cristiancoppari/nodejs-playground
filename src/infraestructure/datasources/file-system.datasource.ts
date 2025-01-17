@@ -35,14 +35,21 @@ export class FileSystemDatasource implements LogDatasource {
 
     fs.appendFileSync(this.allLogsPath, logAsJson);
 
-    if (newLog.level === LogSeverityLevel.low) return;
+    if (newLog.level === LogSeverityLevel.low) {
+      console.log("New log saved in FileSystem");
+      return;
+    }
 
     if (newLog.level === LogSeverityLevel.medium) {
       fs.appendFileSync(this.mediumLogsPath, logAsJson);
+      console.log("New log saved in FileSystem");
+      return;
     }
 
     if (newLog.level === LogSeverityLevel.high) {
       fs.appendFileSync(this.highLogsPath, logAsJson);
+      console.log("New log saved in FileSystem");
+      return;
     }
   }
 
