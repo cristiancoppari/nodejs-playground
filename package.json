@@ -24,6 +24,7 @@
     "eslint": "^9.17.0",
     "get-age": "^1.0.1",
     "json-server": "1.0.0-beta.3",
+    "mongoose": "^8.9.5",
     "nodemailer": "^6.9.16",
     "uuid": "^11.0.3",
     "winston": "^3.17.0"
