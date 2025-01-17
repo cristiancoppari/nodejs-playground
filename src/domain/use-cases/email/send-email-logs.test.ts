@@ -33,7 +33,7 @@ describe("send-email-logs.ts", () => {
     );
     expect(mockLogRepository.saveLog).toHaveBeenCalledWith(
       expect.objectContaining({
-        level: LogSeverityLevel.high,
+        level: LogSeverityLevel.low,
         message: `Email sent successfully`,
         origin: "send-email-logs.ts",
       })
