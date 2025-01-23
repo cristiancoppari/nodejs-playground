@@ -4,10 +4,10 @@ node_modules/
 logs/
 coverage/
 .env
-mongo-db/
-postgres-db/
-mongo-db-test/
-postgres-db-test/
-postgres
-json-server/
+/mongo
+/postgres-db
+/mongo-db-test
+/postgres-db-test
+/postgres
+/json-server
 keys/
