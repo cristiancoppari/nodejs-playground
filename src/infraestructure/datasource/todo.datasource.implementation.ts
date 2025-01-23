@@ -3,7 +3,7 @@ import { CreateTodoDto } from "../../domain/dtos/todos/create-todo.dto";
 import { TodoEntity } from "../../domain/dtos/todo.entity";
 import { prisma } from "../../data/postgres";
 import { UpdateTodoDto } from "../../domain/dtos/todos/update-todo.dto";
-
+import { CustomError } from "../../domain/errors/custom.error";
 export class TodoDatasourceImplementation implements TodoDatasource {
   constructor() {}
 
@@ -24,7 +24,7 @@ export class TodoDatasourceImplementation implements TodoDatasource {
     const todo = await prisma.todo.findUnique({ where: { id } });
 
     if (!todo) {
-      throw new Error("findById: Todo not found");
+      throw new CustomError("findById: Todo not found", 404);
     }
 
     return TodoEntity.fromObject(todo);
