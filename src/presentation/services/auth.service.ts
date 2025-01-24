@@ -7,9 +7,12 @@ import {
   UserEntity,
 } from "../../domain";
 import { JwtAdapter } from "../../config";
+import { EmailService, SendMailOptions } from "./email.service";
+import { envs } from "../../config/envs";
+import jwt from "jsonwebtoken";
 
 export class AuthService {
-  constructor() {}
+  constructor(private readonly emailService: EmailService) {}
 
   public registerUser = async (registerUserDto: RegisterUserDto) => {
     const existingUser = await UserModel.findOne({
@@ -35,7 +38,8 @@ export class AuthService {
         throw CustomError.internalServerError("Error generating token");
       }
 
-      // send email
+      // send confirmation email
+      this.sendEmailValidationLink(user.email);
 
       const { password, ...rest } = UserEntity.fromObject(user);
 
@@ -81,5 +85,60 @@ export class AuthService {
       },
       token,
     };
+  };
+
+  private sendEmailValidationLink = async (email: string) => {
+    const token = await JwtAdapter.generateToken({ email });
+
+    if (!token) {
+      throw CustomError.internalServerError("Error generating token");
+    }
+
+    const link = `${envs.WEBSERVICE_URL}/api/auth/validate-email/${token}`;
+
+    const htmlBody = `
+      <h1>Confirm your email</h1>
+      <a href="${link}">Confirm your email</a>
+    `;
+
+    const options: SendMailOptions = {
+      to: email,
+      subject: "Confirm your email",
+      htmlBody,
+    };
+
+    const isSent = await this.emailService.sendEmail(options);
+
+    if (!isSent) {
+      throw CustomError.internalServerError("Error sending email");
+    }
+
+    return true;
+  };
+
+  public validateEmail = async (token: string) => {
+    const payload = await JwtAdapter.validateToken(token);
+
+    if (!payload) {
+      throw CustomError.badRequest("Invalid token");
+    }
+
+    const { email } = payload as { email: string };
+
+    if (!email) {
+      throw CustomError.internalServerError("Email not in token");
+    }
+
+    const user = await UserModel.findOne({ email });
+
+    if (!user) {
+      throw CustomError.badRequest("User not found");
+    }
+
+    user.emailValidated = true;
+
+    await user.save();
+
+    return true;
   };
 }

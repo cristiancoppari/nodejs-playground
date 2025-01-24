@@ -7,10 +7,10 @@ export class AuthController {
 
   private handleError = (error: unknown, res: Response) => {
     if (error instanceof CustomError) {
-      res.status(error.statusCode).json({ error: error.message });
+      return res.status(error.statusCode).json({ error: error.message });
     }
 
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   };
 
   registerUser = async (req: Request, res: Response) => {
@@ -23,7 +23,7 @@ export class AuthController {
     this.authService
       .registerUser(registerUserDto!)
       .then((user) => {
-        res.json(user);
+        return res.json(user);
       })
       .catch((error) => this.handleError(error, res));
   };
@@ -38,12 +38,19 @@ export class AuthController {
     this.authService
       .loginUser(loginUserDto!)
       .then((user) => {
-        res.json(user);
+        return res.json(user);
       })
       .catch((error) => this.handleError(error, res));
   };
 
   validateEmail = async (req: Request, res: Response) => {
-    res.json("validate email");
+    const { token } = req.params;
+
+    this.authService
+      .validateEmail(token)
+      .then(() => {
+        return res.json("Email was validated successfully");
+      })
+      .catch((error) => this.handleError(error, res));
   };
 }

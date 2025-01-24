@@ -27,7 +27,7 @@ export class UserEntity {
       throw CustomError.badRequest("Email is required");
     }
 
-    if (!!emailValidated) {
+    if (emailValidated === undefined) {
       throw CustomError.badRequest("Email validated is required");
     }
 
