@@ -9,7 +9,6 @@ import {
 import { JwtAdapter } from "../../config";
 import { EmailService, SendMailOptions } from "./email.service";
 import { envs } from "../../config/envs";
-import jwt from "jsonwebtoken";
 
 export class AuthService {
   constructor(private readonly emailService: EmailService) {}

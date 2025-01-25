@@ -7,7 +7,7 @@ export class AppRoutes {
 
     // Definir las rutas
     router.use("/api/auth", AuthRoutes.routes);
-    router.use("/api/category", CategoryRoutes.routes);
+    router.use("/api/categories", CategoryRoutes.routes);
 
     return router;
   }
