@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CustomError, CreateCategoryDto } from "../../domain";
+import { CustomError, CreateCategoryDto, PaginationDto } from "../../domain";
 import { CategoryService } from "../services/category.service";
 
 export class CategoryController {
@@ -34,8 +34,20 @@ export class CategoryController {
   };
 
   getCategories = async (req: Request, res: Response) => {
+    const { page = 1, limit = 10 } = req.query;
+
+    const [error, paginationDto] = PaginationDto.create(
+      Number(page),
+      Number(limit)
+    );
+
+    if (error) {
+      this.handleError(error, res);
+      return;
+    }
+
     this.categoryService
-      .getCategories()
+      .getCategories(paginationDto!)
       .then((categories) => {
         res.json(categories);
       })
