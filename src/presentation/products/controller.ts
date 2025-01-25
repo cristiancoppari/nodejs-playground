@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { CustomError, PaginationDto } from "../../domain";
-
+import { CreateProductDto, CustomError, PaginationDto } from "../../domain";
+import { ProductService } from "../services";
 export class ProductController {
-  // constructor(private readonly productService: ProductService) {}
+  constructor(private readonly productService: ProductService) {}
 
   private handleError = (error: unknown, res: Response) => {
     if (error instanceof CustomError) {
@@ -13,46 +13,47 @@ export class ProductController {
   };
 
   createProduct = (req: Request, res: Response) => {
-    // const [error, createCategoryDto] = CreateCategoryDto.create(req.body);
+    const [error, createProductDto] = CreateProductDto.create({
+      ...req.body,
+      user: req.body.user.id,
+    });
 
-    // if (error) {
-    //   this.handleError(error, res);
-    //   return;
-    // }
+    if (error) {
+      res.status(400).json({ error });
+      return;
+    }
 
-    // this.categoryService
-    //   .createCategory(createCategoryDto!, req.body.user)
-    //   .then((newCategory) => {
-    //     res.status(201).json(newCategory);
-    //   })
-    //   .catch((error) => {
-    //     this.handleError(error, res);
-    //   });
-
-    res.status(201).json({ message: "Product created" });
-    return;
+    this.productService
+      .createProduct(createProductDto!)
+      .then((newProduct) => {
+        res.status(201).json(newProduct);
+        return;
+      })
+      .catch((error) => {
+        this.handleError(error, res);
+        return;
+      });
   };
 
   getProducts = async (req: Request, res: Response) => {
-    // const { page = 1, limit = 10 } = req.query;
-    // const [error, paginationDto] = PaginationDto.create(
-    //   Number(page),
-    //   Number(limit)
-    // );
-    // if (error) {
-    //   this.handleError(error, res);
-    //   return;
-    // }
-    // this.categoryService
-    //   .getCategories(paginationDto!)
-    //   .then((categories) => {
-    //     res.json(categories);
-    //   })
-    //   .catch((error) => {
-    //     this.handleError(error, res);
-    //   });
-
-    res.status(201).json({ message: "Products fetched" });
-    return;
+    const { page = 1, limit = 10 } = req.query;
+    const [error, paginationDto] = PaginationDto.create(
+      Number(page),
+      Number(limit)
+    );
+    if (error) {
+      this.handleError(error, res);
+      return;
+    }
+    this.productService
+      .getProducts(paginationDto!)
+      .then((products) => {
+        res.status(200).json(products);
+        return;
+      })
+      .catch((error) => {
+        this.handleError(error, res);
+        return;
+      });
   };
 }
